@@ -48,9 +48,8 @@ function normaliseData(data){
 console.log(normaliseData(data))
 
 
-const initialState = normaliseData(data)
-initialState.currentBoardId=initialState.boards[0]?.id
-console.log(initialState)
+const initialState = data
+initialState.currentBoard="0"
 export const boardsSlice = createSlice({
   name: "boards",
   initialState,
