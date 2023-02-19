@@ -20,9 +20,13 @@ const ModalContainer = styled.section`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: clamp(10%, 400px, 60%);
+  width: clamp(15%, 400px, 100%);
   color: ${props => props.theme.title};
-  
+  @media (width < 760px){
+    top: 7rem;
+    transform: translate(-50%, 0);
+    /* min-width: 80%; */
+  }
   & .close-modal{
     top: 0.25rem;
     right: 0.25rem;
