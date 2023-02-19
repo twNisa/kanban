@@ -48,7 +48,7 @@ export default function AddTask({toggleState}){
       board: currentBoard.id,
     }
     dispatch(addTask(task))
-    console.log(task)
+    toggleState()
   }
   function onError(error, e){
     console.log(error)
@@ -108,15 +108,18 @@ export default function AddTask({toggleState}){
           <button onClick={()=>handleAddSubtask()}>+ Add New Subtask</button>
         }
         <div className="input">
-          <select {...register("status")}>
+          <label htmlFor="subtasks">Status</label>
+          <select 
+            className={errors?.status && "error"}
+            {...register("status", {required: true})}
+          >
             {currentBoard.columns.map((status, index) => {
-
               return <option key={status.id} id={status.id} value={status.name} selected={index === 0 ? "selected" : ""}>{status.name}</option>
             })}
           </select>
+          {errors.status?.type==="required" && <span className="error-input">Status Required</span>}
         </div>
         
-
         <button className="primary" type="submit" onClick={handleSubmit(onSubmit, onError)}>Create Task</button>
     </Modal>
   )

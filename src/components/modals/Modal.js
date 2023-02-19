@@ -164,6 +164,9 @@ const ModalContent = styled.section`
       &:focus{
         border-color: ${props => props.theme.darkBlue};
       }
+      &.error{
+        border-color: ${props => props.theme.red};
+      }
     }
   }
   

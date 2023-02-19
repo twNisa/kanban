@@ -7,17 +7,13 @@ import {ColumnContainer, TasksContainer, TaskItem} from "./BoardElements"
 import Colors from '../../shared/Colors'
 import ViewTask from '../../modals/ViewTask'
 
-function viewTask(){
 
-}
-function getTasks(tasks){
+function getTasks(tasks, handleViewTask){
   return tasks.map(task => {
-    const [viewTaskState, setViewTaskState] = React.useState(false)
-    const handleViewTask = () => setViewTaskState(prev => !prev)
 
     return <TaskItem 
       key={task.id}
-      onClick={viewTask(task, handleViewTask)}
+      onClick={handleViewTask}
     >
       <h2>{task.name}</h2>
       <p>
@@ -32,7 +28,6 @@ function getTasks(tasks){
     </TaskItem>
   })
 }
-
 
 
 function Board({isSidebar}) {
@@ -66,12 +61,18 @@ function Board({isSidebar}) {
     return <></>
   }
   return (
-    <BoardContainer className={!isSidebar ? "all" : ""} ref={ref} {...events}>
-      {columns}
-      <ColumnContainer className='new-column'>
-        + New Column
-      </ColumnContainer>
-    </BoardContainer>
+    <>
+      <BoardContainer className={!isSidebar ? "all" : ""} ref={ref} {...events}>
+        {columns}
+        <ColumnContainer className='new-column'>
+          + New Column
+        </ColumnContainer>
+      </BoardContainer>   
+      {
+        viewTaskState && <ViewTask toggleState={handleViewTask} targetTask={0} />
+      }
+    </>
+    
   )
 }
 
