@@ -48,14 +48,15 @@ function normaliseData(data){
 console.log(normaliseData(data))
 
 
-const initialState = data
-initialState.currentBoard="0"
+const initialState = normaliseData(data)
+initialState.currentBoardId=initialState.boards[0]?.id
+console.log(initialState)
 export const boardsSlice = createSlice({
   name: "boards",
   initialState,
   reducers: {
     setCurrentBoard(state, action){
-      state.currentBoard = action.payload
+      state.currentBoardId = action.payload
     },
     addBoard(state, action){
       if(!state.boards.find(board => board.name.toLowerCase() === action.payload.name.toLowerCase())){

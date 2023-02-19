@@ -10,11 +10,13 @@ import BoardModal from "./BoardModal";
 export default function CreateBoard({toggleState}){
   const dispatch = useDispatch()
   const boardsData = useSelector((state) => state.boards.boards)
+  const tasks = useSelector(state => state.boards.tasks)
+
   const {register, handleSubmit, formState: {errors}, control} = useForm({
     defaultValues: {
       id: nanoid(),
       name: "",
-      columns: [{id: nanoid(), name: "", tasks: []}]
+      columns: [{id: nanoid(), name: "", task_entries: []}]
     }
   })
   const {fields, append, remove} = useFieldArray({
@@ -27,8 +29,8 @@ export default function CreateBoard({toggleState}){
   }
 
   function isDuplicateColumn(name){
-    console.log(fields)
-    return fields.find(column => column.name === name) ? false : true
+    console.log(fields.filter(field => field.name === name))
+    return fields.filter(field => field.name === name).length > 1 ? false : true
   }
   
   function onSubmit(data, e){
@@ -37,7 +39,7 @@ export default function CreateBoard({toggleState}){
   }
  
   function handleAddColumn(){
-    append({ id: nanoid(), name: '', tasks: []})
+    append({ id: nanoid(), name: '', task_entries: []})
     console.log(fields)
   }
  

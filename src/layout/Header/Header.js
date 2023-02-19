@@ -41,7 +41,7 @@ function Header() {
         {
           boardsData.boards.length > 0 ? 
           <>
-          <h1>{boardsData?.boards?.find((board) => board.id === boardsData.currentBoard)?.name}</h1>
+          <h1>{boardsData?.boards?.find((board) => board.id === boardsData.currentBoardId)?.name}</h1>
           <div className='buttons'>
             <Button type='button' className='button' onClick={handleAddTask}>
               + <span>Add New Task</span>

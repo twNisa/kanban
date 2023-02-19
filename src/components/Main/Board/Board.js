@@ -8,20 +8,20 @@ import Colors from '../../shared/Colors'
 import ViewTask from '../../modals/ViewTask'
 
 
-function getTasks(tasks, handleViewTask){
-  return tasks.map(task => {
+function getTasks(tasks_entries, handleViewTask, tasks){
 
+  return tasks_entries.map(task => {
     return <TaskItem 
-      key={task.id}
-      onClick={() => handleViewTask(task)}
+      key={tasks[task].id}
+      onClick={() => handleViewTask(tasks[task])}
     >
-      <h2>{task.name}</h2>
+      <h2>{tasks[task].name}</h2>
       <p>
-        {!task.subtasks 
-          ? task.desc
-          : `${task.subtasks.filter(subtask => subtask.isCompleted === true).length}
+        {!tasks[task].subtasks 
+          ? tasks[task].desc
+          : `${tasks[task].subtasks.filter(subtask => subtask.isCompleted === true).length}
             of 
-            ${task.subtasks.length}
+            ${tasks[task].subtasks.length}
             subtasks`
         }
       </p>
@@ -32,12 +32,14 @@ function getTasks(tasks, handleViewTask){
 
 function Board({isSidebar}) {
   const colorTheme = useSelector((state) => state.preferences.theme)
-  const boardsData = useCurrentData()
+  const currentBoardId = useSelector(state => state.boards.currentBoardId)
+  const boardsData = useSelector((state) => state.boards.boards).find(board => board.id === currentBoardId)
+  const tasks = useSelector(state => state.boards.tasks)
 
   const [viewTaskState, setViewTaskState] = React.useState(false)
   const [targetTask, setTargetTask] = React.useState()
+  
   function handleViewTask(task){
-    
     setViewTaskState(prev => !prev)
     setTargetTask(task)
   }
@@ -48,10 +50,10 @@ function Board({isSidebar}) {
       ballColor={index > Colors.length-1  ? Colors.default : Colors[index]}
     >
       <span>
-        <h1>{column.name.toUpperCase()} ({column.tasks.length})</h1>
+        <h1>{column.name.toUpperCase()} ({column.task_entries.length})</h1>
       </span>
-      <TasksContainer className={!column.tasks.length && "empty"}>
-        {getTasks(column.tasks, handleViewTask)}
+      <TasksContainer className={!column.task_entries.length && "empty"}>
+        {getTasks(column.task_entries, handleViewTask, tasks)}
       </TasksContainer>
     </ColumnContainer>
   ))

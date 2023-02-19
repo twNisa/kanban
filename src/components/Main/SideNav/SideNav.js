@@ -14,7 +14,7 @@ function getBoardsButtons(boardsData, onClick){
   const buttons = boardsData.boards?.map((board) => (
     <BoardButton 
       key={board.id}
-      className={board.id=== boardsData.currentBoard ? "active" : ""}
+      className={board.id=== boardsData.currentBoardId ? "active" : ""}
       onClick={(e) => onClick(e)}
       data-id={board.id}
     >
