@@ -6,10 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { addTask } from "../../app/boardsSlice";
 import {MdDeleteForever} from "react-icons/md"
 import Dropdown from "../shared/Dropdown";
+import DeleteTask from "./DeleteTask";
 
 function SubtaskCheckbox({subtask, handleClick}){
   return (
-    <div className="subtask-item" onClick={handleClick} >
+    <div className={subtask.isCompleted ? "checked subtask-item" : "subtask-item" } onClick={handleClick} >
       <input type="checkbox" value={subtask.name} checked={subtask.isCompleted} onChange={handleClick}/>
       <span>{subtask.name}</span>
     </div>
@@ -21,6 +22,9 @@ export default function ViewTask({toggleState, targetTask}){
   const dispatch = useDispatch()
   const currentBoardId = useSelector(state => state.boards.currentBoard)
   const currentBoard = useSelector(state => state.boards.boards.find(board => board.id === currentBoardId))
+  const [deleteTaskOpen, setdeleteTaskOpen] = React.useState(false)
+  const [editTaskOpen, setEditTaskOpen] = React.useState(false)
+
 
   const [task, setTask] = React.useState({
     id: targetTask.id,
@@ -37,10 +41,9 @@ export default function ViewTask({toggleState, targetTask}){
     setTask(prev => (
       {
         // ...prev,
-        // subtasks[index]: {
-        //   ...prev.subtasks.subtask[index],
-        //   isCompleted: !prev.subtasks.subtask[index].isCompleted
-        // }
+        
+        // subtasks: "zxc"
+      
       }
     ))
     console.log(task)
@@ -50,49 +53,53 @@ export default function ViewTask({toggleState, targetTask}){
   ))
 
   function handleStatusChange(e){
-    console.log(e.target.id)
     setTask(prev=>(
       {
         ...prev,
         status: e.target.value,
-        statusId: e.target.id
+        statusId:  currentBoard.columns.find(column => column.name === e.target.value).id
       }
     ))
     console.log(task)
   }
-  function handleDelete(){
+  function handleDeleteTask(){
+    setdeleteTaskOpen(prev => !prev)
 
   }
-  function handleEdit(){
+  function handleEditTask(){
 
   }
 
   return (
-    <Modal toggleState={toggleState} > 
-      
-      <section className="task-container">
-        <header>
-          <h1>{task.name}</h1>
-          <Dropdown name="task" deleteFunc={handleDelete} editFunc={handleEdit} />
-        </header>
-        <p>{task.desc ? task.desc : "No Description"}</p>
+    <>
+      <Modal toggleState={toggleState} > 
+        <section className="task-container">
+          <header>
+            <h1>{task.name}</h1>
+            <Dropdown name="task" deleteFunc={handleDeleteTask} editFunc={handleEditTask} />
+          </header>
+          <p>{task.desc ? task.desc : "No Description"}</p>
 
-        <section className="subtasks-container">
-          <h2>Subtask {`${task.subtasks.filter(subtask => subtask.isCompleted).length} of ${task.subtasks.length}`}</h2>
-          {subtasks}
+          <section className="subtasks-container">
+            <h2>Subtask {`${task.subtasks.filter(subtask => subtask.isCompleted).length} of ${task.subtasks.length}`}</h2>
+            {subtasks}
+          </section>
+
+          <section className="subtask-status input">
+            <h2>Current Status</h2>
+            <select value={task.status} onChange={handleStatusChange}>
+              {currentBoard.columns.map((column) => {
+                return <option key={column.id} value={column.name}>{column.name}</option>
+              })}
+            </select>
+          </section>
         </section>
-
-        <section className="subtask-status input">
-          <h2>Current Status</h2>
-          <select value={task.status} onChange={handleStatusChange}>
-            {currentBoard.columns.map((column) => {
-              return <option key={column.id} id={column.id} value={column.name}>{column.name}</option>
-            })}
-          </select>
-        </section>
-
-      </section>
-    </Modal>
+      </Modal>
+      {deleteTaskOpen && 
+        <DeleteTask toggleState={handleDeleteTask} task={task} />
+      }
+    </>
+    
   )
 
 }

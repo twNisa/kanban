@@ -116,7 +116,7 @@ const ModalContent = styled.section`
     }
   }
 
-  & div.input{
+  & .input{
     width: 100%;
     position: relative;
     & > span{
@@ -166,6 +166,7 @@ const ModalContent = styled.section`
       color: ${props => props.theme.title};
       border: 2px solid ${props => props.theme.subTitle};
       transition: border-color .25s ease;
+      cursor: pointer;
       &:focus{
         border-color: ${props => props.theme.darkBlue};
       }
@@ -177,10 +178,17 @@ const ModalContent = styled.section`
   }
 
   & section.task-container{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     & header{
       display: flex;
       align-items: center;
       justify-content: space-between;
+      h1{
+        font-size: 1.2rem;
+      }
+      
       button{
         padding: 0;
         background-color: ${props=> props.theme.main};
@@ -188,6 +196,10 @@ const ModalContent = styled.section`
           background-color: ${props=> props.theme.bg};
         }
       }
+    }
+
+    p{
+      color: ${props => props.theme.subTitle};
     }
 
     & .subtasks-container{
@@ -203,12 +215,22 @@ const ModalContent = styled.section`
         display: flex;
         align-items: center;
         & span{
-          
+          margin-left: 0.5rem;
+          font-weight: bold;
         }
+        
         &:hover{
           opacity: 0.6;
         }
       }
+      & .subtask-item.checked span{
+          color: ${props => props.theme.subTitle};
+          text-decoration: line-through;
+      }
+    }
+
+    & .subtask-status{
+      
     }
   }
   

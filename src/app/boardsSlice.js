@@ -1,8 +1,56 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 import data from "../data.json"
 
-const initialState = data
-initialState.currentBoard="0"
+function normaliseTasks(data){
+  const tasks = {}
+  data.boards.map(board => {
+    const boardId = board.id
+    board.columns.map(column => {
+      const columnId = column.id
+      column.tasks.map(task => {
+        const taskI = {...task}
+        taskI.boardId = boardId
+
+        tasks[task.id] = taskI
+      })
+    })
+  }) 
+  return tasks
+}
+
+function normaliseBoards(data){
+  const boards = []
+  data.boards.map(board => {
+    const boardId = board.id
+    const boardInfo = {
+      id: board.id,
+      name: board.name,
+      columns: board.columns.map(column => (
+        {
+          id: column.id,
+          name: column.name,
+          task_entries: column.tasks.map(task => task.id)
+        }
+      ))
+    }
+    boards.push(boardInfo)
+  })
+  return boards
+}
+
+function normaliseData(data){
+  const boards = {
+    boards: normaliseBoards(data),
+    tasks: normaliseTasks(data)
+  }
+  return boards
+}
+console.log(normaliseData(data))
+
+
+const initialState = normaliseData(data)
+initialState.currentBoardId=initialState.boards[0]?.id
+console.log(initialState)
 export const boardsSlice = createSlice({
   name: "boards",
   initialState,
@@ -35,9 +83,14 @@ export const boardsSlice = createSlice({
         .find(column => column.id === action.payload.task.statusId)
         ?.tasks.push(action.payload.task)
 
+    },
+    delTask(state, action){
+      const task = action.payload
+      
+     
     }
   }
 })
 
-export const {setCurrentBoard, addBoard, delBoard, editBoard, addTask } = boardsSlice.actions
+export const {setCurrentBoard, addBoard, delBoard, editBoard, addTask, delTask } = boardsSlice.actions
 export default boardsSlice.reducer
