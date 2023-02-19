@@ -12,10 +12,12 @@ export const HeaderContainer = styled.header`
     height: 6rem;
     padding-left: 2rem;
     position: relative;
-    border-right: 1px solid ${props => `${props.theme.borderLine}`};
-    min-width: 18rem;
+    
+    @media (width > 760px){
+      border-right: 1px solid ${props => `${props.theme.borderLine}`};
+      min-width: 18rem;
 
-    &:after{
+      &:after{
       content:"";
       height: 1px;
       width: 100%;
@@ -24,6 +26,8 @@ export const HeaderContainer = styled.header`
       bottom: 0;
       left: 0;
     }
+    }
+    
 
   }
 
@@ -52,5 +56,10 @@ export const BoardHeading = styled.section`
     justify-content: center;
     align-items: center;
     gap: 1rem;
+    @media (width < 760px){
+      span{
+        display: none;
+      }
+    }
   }
 `

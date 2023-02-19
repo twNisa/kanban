@@ -30,10 +30,11 @@ function Header() {
   function handleAddTask(){
     setCreateModalOpen(prev => !prev)
   }
+
   return (
     <HeaderContainer>
       <picture>
-        <source srcSet={logoMobile} media='(max-width: 767px)' />
+        <source srcSet={logoMobile} media='(max-width: 760px)' />
         <img src={logoImg} />
       </picture>
       <BoardHeading>
@@ -43,7 +44,7 @@ function Header() {
           <h1>{boardsData?.boards?.find((board) => board.id === boardsData.currentBoard)?.name}</h1>
           <div className='buttons'>
             <Button type='button' className='button' onClick={handleAddTask}>
-              + Add New Task
+              + <span>Add New Task</span>
             </Button>
             <Dropdown 
               name="Board" 

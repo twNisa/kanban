@@ -13,7 +13,7 @@ function getTasks(tasks, handleViewTask){
 
     return <TaskItem 
       key={task.id}
-      onClick={handleViewTask}
+      onClick={() => handleViewTask(task)}
     >
       <h2>{task.name}</h2>
       <p>
@@ -35,7 +35,12 @@ function Board({isSidebar}) {
   const boardsData = useCurrentData()
 
   const [viewTaskState, setViewTaskState] = React.useState(false)
-  function handleViewTask(){setViewTaskState(prev => !prev)}
+  const [targetTask, setTargetTask] = React.useState()
+  function handleViewTask(task){
+    
+    setViewTaskState(prev => !prev)
+    setTargetTask(task)
+  }
 
   const columns = boardsData?.columns?.map((column, index) => (
     <ColumnContainer 
@@ -69,7 +74,7 @@ function Board({isSidebar}) {
         </ColumnContainer>
       </BoardContainer>   
       {
-        viewTaskState && <ViewTask toggleState={handleViewTask} targetTask={0} />
+        viewTaskState && <ViewTask toggleState={handleViewTask} targetTask={targetTask} />
       }
     </>
     
