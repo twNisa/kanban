@@ -1,6 +1,5 @@
 import { RefObject, useEffect } from 'react';
 
-
 function useOnClickOutside(ref, handler) {
   useEffect(
     () => {

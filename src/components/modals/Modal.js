@@ -54,6 +54,7 @@ const ModalContent = styled.section`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+
   & label{
     font-size: 0.8rem;
     font-weight: bold;
@@ -170,6 +171,43 @@ const ModalContent = styled.section`
       }
       &.error{
         border-color: ${props => props.theme.red};
+      }
+    
+    }
+  }
+
+  & section.task-container{
+    & header{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      button{
+        padding: 0;
+        background-color: ${props=> props.theme.main};
+        &:hover{
+          background-color: ${props=> props.theme.bg};
+        }
+      }
+    }
+
+    & .subtasks-container{
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      & .subtask-item{
+        background-color: ${props=> props.theme.bg};
+        padding: 0.5rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        display: flex;
+        align-items: center;
+        & span{
+          
+        }
+        &:hover{
+          opacity: 0.6;
+        }
       }
     }
   }

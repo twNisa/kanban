@@ -64,7 +64,7 @@ const DropdownContainer = styled.section`
 function Dropdown(props) {
   const { name, editFunc, deleteFunc } = props
 
-  const ref = React.useRef(null)
+  const ref = React.useRef()
   const [isModalOpen, setIsModalOpen] = React.useState(false)
 
   function handleEdit(){
@@ -84,7 +84,7 @@ function Dropdown(props) {
   useOnClickOutside(ref, handleClickOutside)
 
   return (
-    <DropdownContainer>
+    <DropdownContainer ref={ref}>
       <button
         onClick={() => setIsModalOpen(prev => !prev)}
       >
