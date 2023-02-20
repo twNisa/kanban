@@ -38,6 +38,7 @@ function Board({isSidebar}) {
   const tasks = useSelector(state => state.boards.tasks)
 
   const [viewTaskState, setViewTaskState] = React.useState(false)
+  const [editTaskState, setEditTaskState] = React.useState(false)
   const [targetTask, setTargetTask] = React.useState()
   const [addColumn, setAddColumn] = React.useState(false)
   
@@ -48,6 +49,7 @@ function Board({isSidebar}) {
   function handleAddColumn(){
     setAddColumn(prev => !prev)
   }
+  
 
   const columns = boardsData?.columns?.map((column, index) => (
     <ColumnContainer 

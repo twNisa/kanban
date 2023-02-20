@@ -188,13 +188,17 @@ const ModalContent = styled.section`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    h1{
+      font-size: 1.2rem;
+    }
+    h2{
+      font-size: 1rem;
+    }
     & header{
       display: flex;
       align-items: center;
       justify-content: space-between;
-      h1{
-        font-size: 1.2rem;
-      }
+      
       
       button{
         padding: 0;
@@ -213,6 +217,7 @@ const ModalContent = styled.section`
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+
       & .subtask-item{
         background-color: ${props=> props.theme.bg};
         padding: 0.5rem;
@@ -221,9 +226,12 @@ const ModalContent = styled.section`
         transition: all 0.25s ease;
         display: flex;
         align-items: center;
+        font-size: 0.9rem;
+
         & span{
           margin-left: 0.5rem;
           font-weight: bold;
+
         }
         
         &:hover{

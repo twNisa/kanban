@@ -3,15 +3,15 @@ import Modal from "./Modal";
 import {useFieldArray, useForm } from "react-hook-form"
 import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { addTask } from "../../app/boardsSlice";
+import { toggleSubtask, updateStatus } from "../../app/boardsSlice";
 import {MdDeleteForever} from "react-icons/md"
 import Dropdown from "../shared/Dropdown";
 import DeleteTask from "./DeleteTask";
 
 function SubtaskCheckbox({subtask, handleClick}){
   return (
-    <div className={subtask.isCompleted ? "checked subtask-item" : "subtask-item" } onClick={handleClick} >
-      <input type="checkbox" value={subtask.name} checked={subtask.isCompleted} onChange={handleClick}/>
+    <div className={subtask.isCompleted ? "checked subtask-item" : "subtask-item" } onClick={handleClick}  >
+      <input type="checkbox"checked={subtask.isCompleted} />
       <span>{subtask.name}</span>
     </div>
   )
@@ -37,36 +37,46 @@ export default function ViewTask({toggleState, targetTask}){
     statusId: targetTask.statusId,
     boardId: targetTask.boardId
   })
-
-  function handleToggleSubtask(index){
-    setTask(prev => (
-      {
-        ...prev,
-        subtasks: [
-          ...prev.subtasks,
-          subtasks[index].isCompleted = !subtasks[index].isCompleted
-        ] 
-      }
-    ))
-    console.log(task)
-  }
-  const subtasks = task.subtasks.map((subtask, index) => (
-    <SubtaskCheckbox key={subtask.name} subtask={subtask} handleClick={() => handleToggleSubtask(index)} />
+  const didMount = React.useRef(false);
+  const didMountStatus = React.useRef(false);
+  
+  const subtasks = task.subtasks.map((subtask) => (
+    <SubtaskCheckbox key={subtask.name} subtask={subtask} handleClick={() => handleToggleSubtask(subtask.name)} />
   ))
 
+  function handleToggleSubtask(name){
+    const subtasks = task.subtasks.map( subtask => subtask.name === name ? {...subtask, isCompleted: !subtask.isCompleted} : subtask)
+    setTask({...task, subtasks: subtasks})
+    didMount.current = true
+  }
+  
   function handleStatusChange(e){
+    console.log("Status change")
     setTask(prev=>(
       {
         ...prev,
         status: e.target.value,
-        statusId:  currentBoard.columns.find(column => column.name === e.target.value).id
+        statusId: currentBoard.columns.find(column => column.name === e.target.value).id
       }
     ))
-    console.log(task)
+    didMountStatus.current = true
+
+
   }
+  React.useEffect(()=>{
+    if(didMount.current){
+      dispatch(toggleSubtask(task))
+    }
+  }, [task.subtasks])
+
+  React.useEffect(()=>{
+    if(didMountStatus.current){
+      dispatch(updateStatus(task))
+    }
+  }, [task.statusId])
+
   function handleDeleteTask(){
     setdeleteTaskOpen(prev => !prev)
-
   }
   function handleEditTask(){
 
@@ -95,11 +105,15 @@ export default function ViewTask({toggleState, targetTask}){
               })}
             </select>
           </section>
+
         </section>
       </Modal>
       {deleteTaskOpen && 
         <DeleteTask toggleState={handleDeleteTask} task={task} toggleParentState={toggleState}/>
       }
+      {/* {editTaskOpen &&
+        <EditTask toggleState={handleDeleteTask} task={task} />
+      } */}
     </>
     
   )

@@ -9,16 +9,17 @@ import {MdDeleteForever} from "react-icons/md"
 
 export default function AddTask({toggleState}){
   const dispatch = useDispatch()
-  const currentBoardId = useSelector((state) => state.boards.currentBoard)
+  const currentBoardId = useSelector((state) => state.boards.currentBoardId)
   const currentBoard = useSelector((state) => state.boards.boards.find(board => board.id === currentBoardId))
 
-  const {register, handleSubmit, formState: {errors}, control} = useForm({
+  const {register, handleSubmit, formState: {errors, dirtyFields}, control} = useForm({
     defaultValues: {
       id: nanoid(),
       name: "",
       desc: "",
       statusId: "",
       status: "",
+      boardId: "",
       subtasks: [{name: "", isCompleted: false}]
     }
   })
@@ -27,16 +28,10 @@ export default function AddTask({toggleState}){
     name: "subtasks"
   })
 
-  function isDuplicateName(name){ 
-    return currentBoard.columns.find(column => {
-      return column.tasks.find(task => task.name.toLowerCase()  === name.toLowerCase())
-    }) ? false : true
-  }
-  function isDuplicateSubtask(name, field){
-    console.log(fields)
-    return fields.find(subtask => {
-      if(field.id === subtask.id) return;
-      return subtask.name.toLowerCase() === name.toLowerCase()})
+
+  function isDuplicateSubtask(name, formValues){
+    const count = formValues.subtasks.filter(subtask => subtask.name === name).length
+    return (count > 1) ? false : true
   }
 
   function onSubmit(data, e){
@@ -67,7 +62,7 @@ export default function AddTask({toggleState}){
             {...register(`subtasks.${index}.name`, {
               required: true,
               validate: {
-                duplicate: (value, field) => isDuplicateSubtask(value, field)
+                duplicate: (value, formValues) => isDuplicateSubtask(value, formValues)
               }
             })}
           />
@@ -88,9 +83,6 @@ export default function AddTask({toggleState}){
             className={errors?.name && "error"}
             {...register("name", { 
             required: true,
-            validate: {
-              duplicate: (value) => isDuplicateName(value)
-            }
           })} />
           {errors.name?.type==="required" && <span className="error-input">Name Required</span>}
           {errors.name?.type==="duplicate" && <span className="error-input">Name Duplicate</span>}
