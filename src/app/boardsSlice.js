@@ -81,6 +81,9 @@ export const boardsSlice = createSlice({
         }
       )
     },
+    addColumn(state, action){
+
+    },
     addTask(state, action){
       const boardToAdd = state.boards.find(board => board.id === action.payload.board)
 
@@ -106,10 +109,14 @@ export const boardsSlice = createSlice({
       state.boards[boardIndex].columns[columnIndex].task_entries.splice(taskIdIndex, 1)
       
       delete state.tasks[task.id]
-      
-    }
+    },
+    toggleSubtaskFromTask(state, action){
+      const {task, index} = action.payload
+
+    },
+
   }
 })
 
-export const {setCurrentBoard, addBoard, delBoard, editBoard, addTask, delTask } = boardsSlice.actions
+export const {setCurrentBoard, addBoard, delBoard, editBoard, addColumn, addTask, delTask, toggleSubtaskFromTask} = boardsSlice.actions
 export default boardsSlice.reducer

@@ -41,10 +41,11 @@ export default function ViewTask({toggleState, targetTask}){
   function handleToggleSubtask(index){
     setTask(prev => (
       {
-        // ...prev,
-        
-        // subtasks: "zxc"
-      
+        ...prev,
+        subtasks: [
+          ...prev.subtasks,
+          subtasks[index].isCompleted = !subtasks[index].isCompleted
+        ] 
       }
     ))
     console.log(task)
