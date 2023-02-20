@@ -125,7 +125,7 @@ export const boardsSlice = createSlice({
       //delete from the previous column task_entries
       const oldColumnId = state.tasks[task.id].statusId
       const boardIndex = state.boards.findIndex(board => board.id === task.boardId)
-      console.log(boardIndex)
+      console.log(oldColumnId)
       const oldColumnIndex = state.boards[boardIndex].columns.findIndex(column => column.id === oldColumnId)
       const taskIdIndex = state.boards[boardIndex].columns[oldColumnIndex].task_entries.indexOf(task.id)
       
@@ -135,6 +135,8 @@ export const boardsSlice = createSlice({
       const columnIndex = state.boards[boardIndex].columns.findIndex(column => column.id === task.statusId)
       state.boards[boardIndex].columns[columnIndex].task_entries.push(task.id)
 
+      // add to tasks object
+      state.tasks[task.id] = task
     }
 
   }

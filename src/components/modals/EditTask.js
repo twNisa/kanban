@@ -29,10 +29,14 @@ export default function EditTask({toggleState, task, toggleParentState}){
   }
 
   function onSubmit(data, e){
+    console.log(data)
+    console.log(currentBoard.columns.find(column => column.name === data.status)?.id)
     const task = {
       ...data,
       statusId: currentBoard.columns.find(column => column.name === data.status)?.id
     }
+    console.log(task)
+    dispatch(updateStatus(task))
     dispatch(editTask(task))
     toggleState()
     toggleParentState()
