@@ -20,7 +20,7 @@ function SubtaskCheckbox({subtask, handleClick}){
 
 export default function ViewTask({toggleState, targetTask}){
   const dispatch = useDispatch()
-  const currentBoardId = useSelector(state => state.boards.currentBoard)
+  const currentBoardId = useSelector(state => state.boards.currentBoardId)
   const currentBoard = useSelector(state => state.boards.boards.find(board => board.id === currentBoardId))
   const [deleteTaskOpen, setdeleteTaskOpen] = React.useState(false)
   const [editTaskOpen, setEditTaskOpen] = React.useState(false)
@@ -34,7 +34,8 @@ export default function ViewTask({toggleState, targetTask}){
       { name: item.name, isCompleted: item.isCompleted }
     )),
     status: targetTask.status,
-    statusId: targetTask.statusId
+    statusId: targetTask.statusId,
+    boardId: targetTask.boardId
   })
 
   function handleToggleSubtask(index){
@@ -96,7 +97,7 @@ export default function ViewTask({toggleState, targetTask}){
         </section>
       </Modal>
       {deleteTaskOpen && 
-        <DeleteTask toggleState={handleDeleteTask} task={task} />
+        <DeleteTask toggleState={handleDeleteTask} task={task} toggleParentState={toggleState}/>
       }
     </>
     

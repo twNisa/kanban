@@ -9,8 +9,8 @@ import { editBoard } from "../../app/boardsSlice";
 export default function EditBoard({toggleState}){
   const dispatch = useDispatch()
   const boardsData = useSelector((state) => state.boards.boards)
-  const currentBoardId = useSelector((state) => state.boards.currentBoard)
-  const currentBoard = useSelector((state) => state.boards.boards.find(board => board.id === currentBoardId))
+  const currentBoardId = useSelector((state) => state.boards.currentBoardId)
+  const currentBoard = boardsData.find(board => board.id === currentBoardId)
   const {register, handleSubmit, formState: {errors, dirtyFields}, control} = useForm({
     defaultValues: {
       id: currentBoard.id,
@@ -31,9 +31,9 @@ export default function EditBoard({toggleState}){
 
   function isDuplicateColumn(name, field, index){
     // console.log(field.columns?.find(task => task.name === name))
-    if(!dirtyFields.columns?.[index]) return;
-    console.log(dirtyFields)
-    return currentBoard.columns.find(column => column.name === name) ? false : true
+    // if(!dirtyFields.columns?.[index]) return;
+    // console.log(dirtyFields)
+    // return currentBoard.columns.find(column => column.name === name) ? false : true
     
   }
   
@@ -43,7 +43,7 @@ export default function EditBoard({toggleState}){
   }
  
   function handleAddColumn(){
-    append({ id: nanoid(), name: '', tasks: []})
+    append({ id: nanoid(), name: '', task_entries: []})
     console.log(fields)
   }
  

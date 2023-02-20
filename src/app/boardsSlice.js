@@ -58,21 +58,28 @@ export const boardsSlice = createSlice({
     setCurrentBoard(state, action){
       state.currentBoardId = action.payload
     },
-    addBoard(state, action){
+    addBoard(state, action){  
+      console.log(action.payload)
       if(!state.boards.find(board => board.name.toLowerCase() === action.payload.name.toLowerCase())){
         state.boards.push(action.payload)
       }
     },
     editBoard(state, action){
+      console.log(action.payload)
       return ({
         ...state,
-        boards: state.boards.map(board => board.id === action.payload.id ? action.payload : board)})
+        boards: state.boards.map(board => board.id === action.payload.id ? action.payload : board)
+      })
     },
     delBoard(state, action){
-      if(state.boards.indexOf(board => board.id=== action.payload)){
-        state.boards.splice(state.boards.indexOf(board => board.id=== action.payload), 1)
-        state.currentBoard = state.boards?.[0]?.id || "No Board Found"
-      }
+      console.log(state.boards[0].id)
+      return (
+        {
+          ...state,
+          boards: state.boards.filter(board => board.id !== action.payload),
+          tasks: Object.fromEntries(Object.entries(state.tasks).filter(([key, value]) => value.boardId !== action.payload)),
+        }
+      )
     },
     addTask(state, action){
       const boardToAdd = state.boards.find(board => board.id === action.payload.board)
@@ -86,8 +93,20 @@ export const boardsSlice = createSlice({
     },
     delTask(state, action){
       const task = action.payload
+      console.log(task)
       
-     
+      state.boards?.find(board => board.id === state.currentBoardId)
+                  .columns.find(column => column.id === task.statusId)
+      
+      const boardIndex = state.boards.findIndex(board => board.id === task.boardId)
+      console.log(boardIndex)
+      const columnIndex = state.boards[boardIndex].columns.findIndex(column => column.id === task.statusId)
+      const taskIdIndex = state.boards[boardIndex].columns[columnIndex].task_entries.indexOf(task.id)
+
+      state.boards[boardIndex].columns[columnIndex].task_entries.splice(taskIdIndex, 1)
+      
+      delete state.tasks[task.id]
+      
     }
   }
 })

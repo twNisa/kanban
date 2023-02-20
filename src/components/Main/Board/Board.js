@@ -6,6 +6,7 @@ import useCurrentData from '../../../hooks/useCurrentData'
 import {ColumnContainer, TasksContainer, TaskItem} from "./BoardElements"
 import Colors from '../../shared/Colors'
 import ViewTask from '../../modals/ViewTask'
+import AddColumn from '../../modals/AddColumn'
 
 
 function getTasks(tasks_entries, handleViewTask, tasks){
@@ -38,10 +39,14 @@ function Board({isSidebar}) {
 
   const [viewTaskState, setViewTaskState] = React.useState(false)
   const [targetTask, setTargetTask] = React.useState()
+  const [addColumn, setAddColumn] = React.useState(false)
   
   function handleViewTask(task){
     setViewTaskState(prev => !prev)
     setTargetTask(task)
+  }
+  function handleAddColumn(){
+    setAddColumn(prev => !prev)
   }
 
   const columns = boardsData?.columns?.map((column, index) => (
@@ -71,12 +76,15 @@ function Board({isSidebar}) {
     <>
       <BoardContainer className={!isSidebar ? "all" : ""} ref={ref} {...events}>
         {columns}
-        <ColumnContainer className='new-column'>
+        <ColumnContainer className='new-column' onClick={()=>handleAddColumn()}>
           + New Column
         </ColumnContainer>
       </BoardContainer>   
       {
         viewTaskState && <ViewTask toggleState={handleViewTask} targetTask={targetTask} />
+      }
+      {
+        addColumn && <AddColumn toggleState={handleAddColumn} />
       }
     </>
     

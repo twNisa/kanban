@@ -37,14 +37,13 @@ const DeleteContainer = styled.section`
 `
 
 
-export default function DeleteTask({toggleState, task}){
-  const boardsData = useSelector((state) => state.boards)
-  const currentBoardTitle = boardsData.boards.find((board) => board.id === boardsData.currentBoard).name
-  const currentBoardId = boardsData.currentBoard
+export default function DeleteTask({toggleState, task, toggleParentState}){
+
   const dispatch = useDispatch()
   function handleDelete(){
     dispatch(delTask(task))
     toggleState()
+    toggleParentState()
   }
 
 
@@ -52,7 +51,7 @@ export default function DeleteTask({toggleState, task}){
     <Modal toggleState={toggleState} >
       <DeleteContainer>
         <h1 className="danger">Delete this task?</h1>
-        <p>Are you sure you want to delete the `[task.name]` task?</p>
+        <p>Are you sure you want to delete the {task.name} task?</p>
         <p>This action will remove the task and cannot be reversed.</p>
 
         <div className="deleteButtons">

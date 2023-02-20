@@ -39,9 +39,10 @@ const DeleteContainer = styled.section`
 
 export default function DeleteBoard({toggleState}){
   const boardsData = useSelector((state) => state.boards)
-  const currentBoardTitle = boardsData.boards.find((board) => board.id === boardsData.currentBoard).name
-  const currentBoardId = boardsData.currentBoard
+  const currentBoardId = boardsData.currentBoardId
+  const currentBoard= boardsData.boards.find((board) => board.id === currentBoardId)
   const dispatch = useDispatch()
+
   function handleDelete(){
     dispatch(delBoard(currentBoardId))
     toggleState()
@@ -52,7 +53,7 @@ export default function DeleteBoard({toggleState}){
     <Modal toggleState={toggleState} >
       <DeleteContainer>
         <h1 className="danger">Delete this board?</h1>
-        <p>Are you sure you want to delete the `{currentBoardTitle}` board?</p>
+        <p>Are you sure you want to delete the `{currentBoard.name}` board?</p>
         <p>This action will remove all data of the board and cannot be reversed.</p>
 
         <div className="deleteButtons">

@@ -111,6 +111,13 @@ const ModalContent = styled.section`
         &:hover{
           color: ${props => props.theme.darkBlue}
         }
+        &:disabled{
+          cursor: default;
+          &:hover{
+            color: ${props => props.theme.subTitle};
+
+          }
+        }
       }
  
     }
