@@ -1,26 +1,20 @@
 import React from "react";
-import Modal from "../../components/modals/Modal";
+import Modal from "./Modal";
 import {useFieldArray, useForm } from "react-hook-form"
 import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { addTask } from "../../app/boardsSlice";
+import { editTask, updateStatus } from "../../app/boardsSlice";
 import {MdDeleteForever} from "react-icons/md"
 
 
-export default function AddTask({toggleState}){
+export default function EditTask({toggleState, task, toggleParentState}){
   const dispatch = useDispatch()
   const currentBoardId = useSelector((state) => state.boards.currentBoardId)
   const currentBoard = useSelector((state) => state.boards.boards.find(board => board.id === currentBoardId))
 
   const {register, handleSubmit, formState: {errors, dirtyFields}, control} = useForm({
     defaultValues: {
-      id: nanoid(),
-      name: "",
-      desc: "",
-      statusId: "",
-      status: "",
-      boardId: currentBoardId,
-      subtasks: [{name: "", isCompleted: false}]
+      ...task
     }
   })
   const {fields, append, remove} = useFieldArray({
@@ -28,8 +22,8 @@ export default function AddTask({toggleState}){
     name: "subtasks"
   })
 
-
   function isDuplicateSubtask(name, formValues){
+    console.log(formValues)
     const count = formValues.subtasks.filter(subtask => subtask.name === name).length
     return (count > 1) ? false : true
   }
@@ -39,8 +33,9 @@ export default function AddTask({toggleState}){
       ...data,
       statusId: currentBoard.columns.find(column => column.name === data.status)?.id
     }
-    dispatch(addTask(task))
+    dispatch(editTask(task))
     toggleState()
+    toggleParentState()
   }
   function onError(error, e){
     console.log(error)
@@ -109,7 +104,8 @@ export default function AddTask({toggleState}){
           {errors.status?.type==="required" && <span className="error-input">Status Required</span>}
         </div>
         
-        <button className="primary" type="submit" onClick={handleSubmit(onSubmit, onError)}>Create Task</button>
+        <button ctype="submit" onClick={toggleState}>Cancel</button>
+        <button className="primary" type="submit" onClick={handleSubmit(onSubmit, onError)}>Save Changes</button>
     </Modal>
   )
 

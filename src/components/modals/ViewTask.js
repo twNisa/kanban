@@ -7,6 +7,7 @@ import { toggleSubtask, updateStatus } from "../../app/boardsSlice";
 import {MdDeleteForever} from "react-icons/md"
 import Dropdown from "../shared/Dropdown";
 import DeleteTask from "./DeleteTask";
+import EditTask from "./EditTask";
 
 function SubtaskCheckbox({subtask, handleClick}){
   return (
@@ -22,20 +23,21 @@ export default function ViewTask({toggleState, targetTask}){
   const dispatch = useDispatch()
   const currentBoardId = useSelector(state => state.boards.currentBoardId)
   const currentBoard = useSelector(state => state.boards.boards.find(board => board.id === currentBoardId))
+  const currentTask = useSelector(state => state.boards.tasks[targetTask.id])
   const [deleteTaskOpen, setdeleteTaskOpen] = React.useState(false)
   const [editTaskOpen, setEditTaskOpen] = React.useState(false)
 
 
   const [task, setTask] = React.useState({
-    id: targetTask.id,
-    name: targetTask.name,
-    desc: targetTask.desc,
-    subtasks: targetTask.subtasks.map(item => (
+    id: currentTask.id,
+    name: currentTask.name,
+    desc: currentTask.desc,
+    subtasks: currentTask.subtasks.map(item => (
       { name: item.name, isCompleted: item.isCompleted }
     )),
-    status: targetTask.status,
-    statusId: targetTask.statusId,
-    boardId: targetTask.boardId
+    status: currentTask.status,
+    statusId: currentTask.statusId,
+    boardId: currentTask.boardId
   })
   const didMount = React.useRef(false);
   const didMountStatus = React.useRef(false);
@@ -79,7 +81,7 @@ export default function ViewTask({toggleState, targetTask}){
     setdeleteTaskOpen(prev => !prev)
   }
   function handleEditTask(){
-
+    setEditTaskOpen(prev => !prev)
   }
 
   return (
@@ -111,9 +113,9 @@ export default function ViewTask({toggleState, targetTask}){
       {deleteTaskOpen && 
         <DeleteTask toggleState={handleDeleteTask} task={task} toggleParentState={toggleState}/>
       }
-      {/* {editTaskOpen &&
-        <EditTask toggleState={handleDeleteTask} task={task} />
-      } */}
+      {editTaskOpen &&
+        <EditTask toggleState={handleEditTask} task={task} toggleParentState={toggleState}/>
+      }
     </>
     
   )

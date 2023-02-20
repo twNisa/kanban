@@ -81,18 +81,17 @@ export const boardsSlice = createSlice({
         }
       )
     },
-    addColumn(state, action){
-
-    },
+ 
     addTask(state, action){
-      const boardToAdd = state.boards.find(board => board.id === action.payload.board)
+      const task = action.payload
 
-      if(!boardToAdd) return
-
-      boardToAdd.columns
-        .find(column => column.id === action.payload.task.statusId)
-        ?.tasks.push(action.payload.task)
-
+      // add task id to entries
+      const boardIndex = state.boards.findIndex(board => board.id === task.boardId)
+      console.log(boardIndex)
+      const columnIndex = state.boards[boardIndex].columns.findIndex(column => column.id === task.statusId)
+      state.boards[boardIndex].columns[columnIndex].task_entries.push(action.payload.id)
+      
+      state.tasks[task.id] = task
     },
     delTask(state, action){
       const task = action.payload
@@ -110,9 +109,9 @@ export const boardsSlice = createSlice({
       
       delete state.tasks[task.id]
     },
-    toggleSubtaskFromTask(state, action){
-      const {task, index} = action.payload
-
+    editTask(state, action){
+      const task = action.payload
+      state.tasks[task.id] = task
     },
     toggleSubtask(state, action){
       const task = action.payload
@@ -124,7 +123,7 @@ export const boardsSlice = createSlice({
       const task = action.payload
 
       //delete from the previous column task_entries
-      const oldColumnId = state.task[task.id].statusId
+      const oldColumnId = state.tasks[task.id].statusId
       const boardIndex = state.boards.findIndex(board => board.id === task.boardId)
       console.log(boardIndex)
       const oldColumnIndex = state.boards[boardIndex].columns.findIndex(column => column.id === oldColumnId)
@@ -141,5 +140,5 @@ export const boardsSlice = createSlice({
   }
 })
 
-export const {setCurrentBoard, addBoard, delBoard, editBoard, addColumn, addTask, delTask, toggleSubtaskFromTask, toggleSubtask, updateStatus} = boardsSlice.actions
+export const {setCurrentBoard, addBoard, delBoard, editBoard, addTask, delTask, toggleSubtaskFromTask, toggleSubtask, updateStatus, editTask} = boardsSlice.actions
 export default boardsSlice.reducer
