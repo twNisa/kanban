@@ -29,7 +29,6 @@ export default function CreateBoard({toggleState}){
   }
 
   function isDuplicateColumn(name){
-    console.log(fields.filter(field => field.name === name))
     return fields.filter(field => field.name === name).length > 1 ? false : true
   }
   
@@ -40,7 +39,6 @@ export default function CreateBoard({toggleState}){
  
   function handleAddColumn(){
     append({ id: nanoid(), name: '', task_entries: []})
-    console.log(fields)
   }
  
   const columns = fields.map((item, index) => {

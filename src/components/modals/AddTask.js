@@ -43,7 +43,6 @@ export default function AddTask({toggleState}){
     toggleState()
   }
   function onError(error, e){
-    console.log(error)
   }
  
   function handleAddSubtask(){

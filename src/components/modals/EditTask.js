@@ -23,26 +23,21 @@ export default function EditTask({toggleState, task, toggleParentState}){
   })
 
   function isDuplicateSubtask(name, formValues){
-    console.log(formValues)
     const count = formValues.subtasks.filter(subtask => subtask.name === name).length
     return (count > 1) ? false : true
   }
 
   function onSubmit(data, e){
-    console.log(data)
-    console.log(currentBoard.columns.find(column => column.name === data.status)?.id)
     const task = {
       ...data,
       statusId: currentBoard.columns.find(column => column.name === data.status)?.id
     }
-    console.log(task)
     dispatch(updateStatus(task))
     dispatch(editTask(task))
     toggleState()
     toggleParentState()
   }
   function onError(error, e){
-    console.log(error)
   }
  
   function handleAddSubtask(){

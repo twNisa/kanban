@@ -53,7 +53,6 @@ export default function ViewTask({toggleState, targetTask}){
   }
   
   function handleStatusChange(e){
-    console.log("Status change")
     setTask(prev=>(
       {
         ...prev,

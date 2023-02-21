@@ -32,16 +32,13 @@ export default function AddColumn({toggleState}){
   })
 
   function handleColumnInputChange(id, e){
-    console.log(id)
     setColumns(prev => prev.map(column => column.id === id ? {...column, name: e.target.value} : column))
-    console.log(columns)
   }
   function removeColumn(id){
     setColumns(prev => prev.filter(column => column.id !== id))
   }
   function handleSubmit(){
     board.columns = columns
-    console.log(board)
     dispatch(editBoard(board))
     toggleState()
   }
