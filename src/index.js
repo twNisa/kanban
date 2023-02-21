@@ -5,10 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import {store} from "./app/store"
+import { loadLocalStorage, saveLocalStorage } from './utils/localStorage';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root')
 );
+
+store.subscribe(()=>{
+  console.log(store.getState())
+  saveLocalStorage(store.getState())
+})
 root.render(
   <React.StrictMode>
     <Provider store={store}>
