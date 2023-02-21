@@ -2,7 +2,7 @@ import styled from "styled-components"
 import useOnClickOutside from "../../hooks/useOnClickOutside"
 import React from 'react'
 import {BsThreeDotsVertical} from "react-icons/bs"
-
+import { motion } from "framer-motion"
 
 const DropdownContainer = styled.section`
   position: relative;
@@ -77,7 +77,6 @@ function Dropdown(props) {
     deleteFunc()
   }
   const handleClickOutside = () => {
-    console.log('outside')
     setIsModalOpen(false)
   }
 
@@ -91,14 +90,18 @@ function Dropdown(props) {
         <BsThreeDotsVertical />
       </button>
       {isModalOpen && (
-        <div>
+        <motion.div
+          initial={{ opacity: 0, translateY: ("-20%") }}
+          animate={{ opacity: 1, translateY: ("0")}}
+          transition={{ duration: 0.3 }}
+        >
           <button onClick={handleEdit}>
             Edit {name}
           </button>
           <button className="caution" onClick={handleDelete} >
             Delete {name}
           </button>
-        </div>
+        </motion.div>
       )}
     </DropdownContainer>
   )

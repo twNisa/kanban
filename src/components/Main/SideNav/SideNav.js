@@ -11,6 +11,7 @@ import Modal from '../../modals/Modal';
 import CreateBoard from "../../modals/CreateBoard"
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 const ModalOverlay = styled.section`
   position: absolute;
   top: 0;
@@ -64,7 +65,13 @@ function SideNav({isSidebar, toggleSidebar, toggleCreateBoard, toggleState}) {
   if(windowWidth < 760){
     return createPortal(
       <ModalOverlay onClick={toggleState}>
-        <SideNavContainer onClick={(e) => e.stopPropagation()}>
+        <SideNavContainer 
+          as={motion.div}
+          initial={{ opacity: 0, translateY: ("-100%"), translateX: "-50%" }}
+          animate={{ opacity: 1, translateY: ("0"), translateX: "-50%" }}
+          transition={{ duration: 0.3 }}
+          onClick={(e) => e.stopPropagation()}
+        >
           <SideNavTop>
             <h2>ALL BOARDS ({boardsData.boards.length}) </h2>
             {boardsButtons &&

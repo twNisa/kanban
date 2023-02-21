@@ -45,12 +45,10 @@ function normaliseData(data){
   }
   return boards
 }
-console.log(normaliseData(data))
 
 
 const initialState = normaliseData(data)
 initialState.currentBoardId=initialState.boards[0]?.id
-console.log(initialState)
 export const boardsSlice = createSlice({
   name: "boards",
   initialState,
@@ -59,20 +57,17 @@ export const boardsSlice = createSlice({
       state.currentBoardId = action.payload
     },
     addBoard(state, action){  
-      console.log(action.payload)
       if(!state.boards.find(board => board.name.toLowerCase() === action.payload.name.toLowerCase())){
         state.boards.push(action.payload)
       }
     },
     editBoard(state, action){
-      console.log(action.payload)
       return ({
         ...state,
         boards: state.boards.map(board => board.id === action.payload.id ? action.payload : board)
       })
     },
     delBoard(state, action){
-      console.log(state.boards[0].id)
       return (
         {
           ...state,
@@ -87,7 +82,6 @@ export const boardsSlice = createSlice({
 
       // add task id to entries
       const boardIndex = state.boards.findIndex(board => board.id === task.boardId)
-      console.log(boardIndex)
       const columnIndex = state.boards[boardIndex].columns.findIndex(column => column.id === task.statusId)
       state.boards[boardIndex].columns[columnIndex].task_entries.push(action.payload.id)
       
@@ -95,13 +89,11 @@ export const boardsSlice = createSlice({
     },
     delTask(state, action){
       const task = action.payload
-      console.log(task)
       
       state.boards?.find(board => board.id === state.currentBoardId)
                   .columns.find(column => column.id === task.statusId)
       
       const boardIndex = state.boards.findIndex(board => board.id === task.boardId)
-      console.log(boardIndex)
       const columnIndex = state.boards[boardIndex].columns.findIndex(column => column.id === task.statusId)
       const taskIdIndex = state.boards[boardIndex].columns[columnIndex].task_entries.indexOf(task.id)
 
@@ -115,17 +107,14 @@ export const boardsSlice = createSlice({
     },
     toggleSubtask(state, action){
       const task = action.payload
-      console.log(task)
       state.tasks[task.id] = task
     },
     updateStatus(state, action){
-      console.log(action.payload)
       const task = action.payload
 
       //delete from the previous column task_entries
       const oldColumnId = state.tasks[task.id].statusId
       const boardIndex = state.boards.findIndex(board => board.id === task.boardId)
-      console.log(oldColumnId)
       const oldColumnIndex = state.boards[boardIndex].columns.findIndex(column => column.id === oldColumnId)
       const taskIdIndex = state.boards[boardIndex].columns[oldColumnIndex].task_entries.indexOf(task.id)
       

@@ -23,7 +23,7 @@ export const SideNavContainer = styled.nav`
     position:absolute; 
     top: 7rem; 
     left: 50%;
-    transform: translateX(-50%);
+    /* transform: translateX(-50%); */
     height: auto;
     border-radius: 5px;
     justify-content: flex-start;

@@ -1,6 +1,7 @@
 import React from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
+import { motion, AnimatePresence } from "framer-motion"
 
 const ModalOverlay = styled.section`
   position: absolute;
@@ -12,19 +13,19 @@ const ModalOverlay = styled.section`
   z-index: 10000;
 `
 
-const ModalContainer = styled.section`
+const ModalContainer = styled(motion.section)`
   position: absolute;
   background-color: ${props => props.theme.main};
   padding: 1.6rem 1.4rem;
   border-radius: 5px;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  /* transform: translate(-50%, -50%); */
   width: clamp(15%, 400px, 100%);
   color: ${props => props.theme.title};
   @media (width < 760px){
-    top: 7rem;
-    transform: translate(-50%, 0);
+    top: 6rem;
+    /* transform: translate(-50%, 0); */
     /* min-width: 80%; */
   }
   & .close-modal{
@@ -252,16 +253,48 @@ const ModalContent = styled.section`
 `
 
 export default function Modal(props){
+  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth)
+  window.addEventListener("resize", handleWindowResize)
+  function handleWindowResize(){
+    setWindowWidth(window.innerWidth)
+  }
+
+  if(windowWidth < 760){
+    return createPortal(
+      <ModalOverlay onClick={props.toggleState}>
+        <ModalContainer 
+          onClick={(e) => e.stopPropagation()}
+          initial={{ opacity: 0, scale: 0.5, translateX:"-50%",}}
+          animate={{ opacity: 1, scale: 1, translateX:"-50%",}}
+          transition={{ duration: 0.3 }}
+        >
+          <button className="close-modal" onClick={props.toggleState}>+</button>
+          <ModalContent >
+            {props.children} 
+  
+          </ModalContent>
+        </ModalContainer>
+      </ModalOverlay>   
+      ,
+      document.querySelector(".App")
+    )
+  }
+
   return createPortal(
     <ModalOverlay onClick={props.toggleState}>
-      <ModalContainer onClick={(e) => e.stopPropagation()}>
+      <ModalContainer 
+        onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0, scale: 0.5, translateX:"-50%", translateY: "-50%" }}
+        animate={{ opacity: 1, scale: 1, translateX:"-50%", translateY: "-50%" }}
+        transition={{ duration: 0.3 }}
+      >
         <button className="close-modal" onClick={props.toggleState}>+</button>
         <ModalContent >
           {props.children} 
 
         </ModalContent>
       </ModalContainer>
-    </ModalOverlay>
+    </ModalOverlay>   
     ,
     document.querySelector(".App")
   )

@@ -7,7 +7,6 @@ export const preferencesSlice = createSlice({
   initialState,
   reducers: {
     toggleTheme(state){
-      console.log("state toggleTheme")
       state.theme === "light" ? state.theme = "dark" : state.theme = "light"
     }
   }
