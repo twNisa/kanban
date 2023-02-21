@@ -39,6 +39,10 @@ export const BoardContainer = styled.section`
     }
   }
 
+  @media (width < 760px){
+    width: 100vw;
+    left: 0;
+  }
 `
 
 export const ColumnContainer = styled.section`

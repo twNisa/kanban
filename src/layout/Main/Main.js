@@ -13,10 +13,14 @@ function Main() {
   function handleOpenCreateBoard(){
     setOpenCreateBoard(true)
   }
-
+  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth)
+  window.addEventListener("resize", handleWindowResize)
+  function handleWindowResize(){
+    setWindowWidth(window.innerWidth)
+  }
   return (
     <MainContainer>
-      <SideNav isSidebar={isSidebar} toggleSidebar={handleToggleSidebar} toggleCreateBoard={handleOpenCreateBoard} />
+      {windowWidth > 760 && <SideNav isSidebar={isSidebar} toggleSidebar={handleToggleSidebar} toggleCreateBoard={handleOpenCreateBoard} />}
       <Board isSidebar={isSidebar} />
     </MainContainer>
   )

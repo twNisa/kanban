@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import icon from "../../../assets/icon-board.svg"
 
-export const SideNavContainer = styled.section`
+export const SideNavContainer = styled.nav`
   color: ${props => props.theme.subTitle};
   min-width: 18rem;
   border-right: 1px solid ${props => props.theme.borderLine};
@@ -13,9 +14,20 @@ export const SideNavContainer = styled.section`
   transition: transform .3s ease;
   z-index: 10;
   position:relative;
-
+  
   &.hide{
     transform: translateX(-100%);
+  }
+
+  @media (width < 760px){
+    position:absolute; 
+    top: 7rem; 
+    left: 50%;
+    transform: translateX(-50%);
+    height: auto;
+    border-radius: 5px;
+    justify-content: flex-start;
+    
   }
 `
 
@@ -80,10 +92,15 @@ export const SideNavBottom = styled.section`
   flex-direction: column;
   align-items: flex-start;
 
+  @media (width < 760px){
+    margin-left: 0;
+    align-items: center;
+  }
+
   & > div.themeToggle{
     background-color: ${props => props.theme.bg};
     width: 12rem;
-    height: 2rem;
+    height: 3rem;
     border-radius: 4px;
     display: flex;
     justify-content: center;
@@ -121,7 +138,6 @@ export const SideNavBottom = styled.section`
       }
     }
   }
-
   & > button.hideSide{
     background: none;
     border: none;
@@ -143,15 +159,6 @@ export const SideNavBottom = styled.section`
 
 export const BoardButton = styled.button`
   position: relative;
-
-  &:before{
-    position: absolute;
-    content: url("../../../assets/icon-board.svg");
-    height: 2rem;
-    width: 2rem;
-
-  }
-
 `
 
 export const SidebarTag = styled.button`

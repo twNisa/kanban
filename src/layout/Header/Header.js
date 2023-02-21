@@ -9,7 +9,8 @@ import { useSelector } from 'react-redux';
 import AddTask from '../../components/modals/AddTask';
 import DeleteBoard from '../../components/modals/DeleteBoard';
 import EditBoard from '../../components/modals/EditBoard';
-
+import SideNav from '../../components/Main/SideNav/SideNav';
+import {FaAngleDown} from "react-icons/fa"
 function Header() {
   const colorTheme = useSelector((state) => state.preferences.theme)
   const logoImg = colorTheme === "light" ? logoDark : logoLight
@@ -18,7 +19,7 @@ function Header() {
   const [createModalOpen, setCreateModalOpen] = React.useState(false)
   const [deleteBoardOpen, setdeleteBoardOpen] = React.useState(false)
   const [editBoardOpen, setEditBoardOpen] = React.useState(false)
-
+  const [menuOpen, setMenuOpen] = React.useState(false)
 
   function handleEditBoard(){
     setEditBoardOpen(prev => !prev)
@@ -30,7 +31,15 @@ function Header() {
   function handleAddTask(){
     setCreateModalOpen(prev => !prev)
   }
-
+  function handleMenuClick(){
+    setMenuOpen(prev => !prev)
+  }
+  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth)
+  window.addEventListener("resize", handleWindowResize)
+  
+  function handleWindowResize(){
+    setWindowWidth(window.innerWidth)
+  }
   return (
     <HeaderContainer>
       <picture>
@@ -41,17 +50,21 @@ function Header() {
         {
           boardsData.boards.length > 0 ? 
           <>
-          <h1>{boardsData?.boards?.find((board) => board.id === boardsData.currentBoardId)?.name}</h1>
-          <div className='buttons'>
-            <Button type='button' className='button' onClick={handleAddTask}>
-              + <span>Add New Task</span>
-            </Button>
-            <Dropdown 
-              name="Board" 
-              editFunc={handleEditBoard} 
-              deleteFunc={handleDeleteBoard} 
-            />
-          </div>
+            <div className='heading'>
+              <h1>{boardsData?.boards?.find((board) => board.id === boardsData.currentBoardId)?.name}</h1>
+              {windowWidth < 760 && <button onClick={handleMenuClick} data-active={menuOpen}><FaAngleDown /></button>}
+            </div>
+            
+            <div className='buttons'>
+              <Button type='button' className='button' onClick={handleAddTask}>
+                + <span>Add New Task</span>
+              </Button>
+              <Dropdown 
+                name="Board" 
+                editFunc={handleEditBoard} 
+                deleteFunc={handleDeleteBoard} 
+              />
+            </div>
           </>
           : <h1>No Board Found</h1>
         }
@@ -67,7 +80,10 @@ function Header() {
       {editBoardOpen && 
         <EditBoard toggleState={handleEditBoard} />
       }
-      
+      {
+        menuOpen &&
+        <SideNav toggleState={handleMenuClick} />
+      }
 
     </HeaderContainer>
   )
