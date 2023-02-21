@@ -12,7 +12,6 @@ const root = ReactDOM.createRoot(
 );
 
 store.subscribe(()=>{
-  console.log(store.getState())
   saveLocalStorage(store.getState())
 })
 root.render(
