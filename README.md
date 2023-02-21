@@ -1,70 +1,38 @@
-# Getting Started with Create React App
+# Kanban Task Management Web App
+Live: https://twnisa.github.io/kanban/
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
+Challenge on https://www.frontendmentor.io/challenges/kanban-task-management-web-app-wgQLt-HlbB
 
-## Available Scripts
+![Kanban Homepage](/screenshots/homepage.png?raw=true "Home page")
 
-In the project directory, you can run:
+Kanban task management app
+Users able to:
+  - View the optimal layout for the app depending on their device's screen size, responsive design.
+  - See hover states for all interactive elements on the page
+  - Create, read, update, and delete boards and tasks
+  - Receive form validations when trying to create/edit boards and tasks
+  - Mark subtasks as complete and move tasks between columns
+  - Hide/show the board sidebar
+  - Toggle the theme between light/dark modes
+  - Keep track of any changes, even after refreshing the browser (localStorage)
 
-### `npm start`
+## Reflections
+This challenge was one of the largest coding challenges I've done. 
+One of the difficulties I encountered during this challenge was dealing with Redux state management when the data is a complex nested object.
+Initially, for actions that will change the global state, I had to update the complex state using multiple array and object destructuring. this was both hard to wrap my mind around the logic, and also was hard to follow when reading the code.
+I needed to simplify the data stored in the global state. To achieve this, I made functions to normalise the data, extracting tasks from the data and changing tasks from arrays to objects. I create a task entries array for each board, storing the relevant task ids in the array.
+Now instead of traversing through the whole tasks array to find a single task, all I needed to access a task was to look it up using the task Id as object key.
+Another obstacle during this project was creating modals. I have created modals in previous projects, but this one required modals to be dynamically rendered with the relevant data, such as task modals and board modals.
+I used the Portals method to create modals in this project. However, this method proved to be quite messy to implement.
+Portals are created in their respective React components, meaning the Board component will have portals to create task modals, then inside the task modal, I will have portals to create edit task modals. Keeping track of what modals I have in what components means the code would be messy to people at first glance.
+I think for future projects, I will try the dispatch method to create modals, especially modals that are complex and reused; while the portal method will be useful to create one off modals.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Tech used
+- React
+- Javascript
+- Styled-components
+- React Redux
+- Framer-motion
+- React-use-draggable-scroll
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
