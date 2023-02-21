@@ -4,7 +4,7 @@ Live: https://twnisa.github.io/kanban/
 ## Description
 Challenge on https://www.frontendmentor.io/challenges/kanban-task-management-web-app-wgQLt-HlbB
 
-![Kanban Homepage](/screenshots/homepage.png?raw=true "Home page")
+![Kanban Homepage](/src/screenshots/homepage.png?raw=true "Home page")
 
 Kanban task management app
 Users able to:
